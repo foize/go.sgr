@@ -11,11 +11,11 @@ type FgColor Color
 
 var fgColorStart = []byte("38;05;")
 
-func (fgc FgColor) SgrCode() uint8 {
+func (fgc FgColor) code() uint8 {
 	return 38
 }
 
-func (fgc FgColor) Sequence() []byte {
+func (fgc FgColor) sequence() []byte {
 	return append(fgColorStart, []byte(strconv.Itoa(int(fgc)))...)
 }
 
@@ -23,11 +23,11 @@ type BgColor Color
 
 var bgColorStart = []byte("48;05;")
 
-func (bgc BgColor) SgrCode() uint8 {
+func (bgc BgColor) code() uint8 {
 	return 48
 }
 
-func (bgc BgColor) Sequence() []byte {
+func (bgc BgColor) sequence() []byte {
 	return append(bgColorStart, []byte(strconv.Itoa(int(bgc)))...)
 }
 

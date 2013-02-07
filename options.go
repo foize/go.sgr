@@ -7,11 +7,11 @@ import (
 // Simple code like reset and bold
 type basicSgr uint8
 
-func (ssgr basicSgr) SgrCode() uint8 {
+func (ssgr basicSgr) code() uint8 {
 	return uint8(ssgr)
 }
 
-func (ssgr basicSgr) Sequence() []byte {
+func (ssgr basicSgr) sequence() []byte {
 	return []byte(strconv.Itoa(int(ssgr)))
 }
 
