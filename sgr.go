@@ -1,4 +1,4 @@
-package tcolor
+package sgr
 
 var CSI = []byte{'\x1b', '['} // ANSI Control Sequence Introducer
 const SgrEnd = 'm'            // ANSI end char for SGR (Select Graphic Rendition)

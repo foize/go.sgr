@@ -1,4 +1,4 @@
-package tcolor
+package sgr
 
 func Parse(format string) string {
 	return parse(true, format)

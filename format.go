@@ -1,4 +1,4 @@
-package tcolor
+package sgr
 
 import (
 	"bytes"
