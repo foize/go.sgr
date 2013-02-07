@@ -8,6 +8,7 @@ import (
 func main() {
 	fmt.Println("normal text")
 
+	// Defined colors
 	fmt.Printf(sgr.MustFormat(sgr.FgBlack, "%s\n"), "FgBlack")
 	fmt.Printf(sgr.MustFormat(sgr.FgRed, "%s\n"), "FgRed")
 	fmt.Printf(sgr.MustFormat(sgr.FgGreen, "%s\n"), "FgGreen")
@@ -27,6 +28,11 @@ func main() {
 	fmt.Printf(sgr.MustFormat(sgr.BgGrey, "%s\n"), "BgGrey")
 	fmt.Printf(sgr.MustFormat(sgr.BgWhite, "%s\n"), "BgWhite")
 
+	// Custom colors
+	fmt.Printf(sgr.MustFormat(sgr.FgColor(69), "%s\n"), "FgColor(69)")
+	fmt.Printf(sgr.MustFormat(sgr.BgColor(90), "%s\n"), "BgColor(90)")
+
+	// Options
 	fmt.Printf(sgr.MustFormat(sgr.Reset, "%s "), "Reset")
 	fmt.Printf(sgr.MustFormat(sgr.ResetForegroundColor, "%s "), "ResetForegroundColor")
 	fmt.Printf(sgr.MustFormat(sgr.ResetBackgroundColor, "%s "), "ResetBackgroundColor")
