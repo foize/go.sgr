@@ -5,6 +5,22 @@ import (
 	"fmt"
 )
 
+func MustFormat(parts ...interface{}) string {
+	str, err := format(true, parts...)
+	if err != nil {
+		panic(err)
+	}
+	return str
+}
+
+func MustFormatWithoutReset(parts ...interface{}) string {
+	str, err := format(false, parts...)
+	if err != nil {
+		panic(err)
+	}
+	return str
+}
+
 func Format(parts ...interface{}) (string, error) {
 	return format(true, parts...)
 }
