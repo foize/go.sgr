@@ -3,10 +3,11 @@ The package go.sgr provides methods to do text-coloring in an ANSI-escape-sequen
 
 ### Installation
 Please use go-get to install this package.
+
 `go get github.com/foize/go.sgr`
 
 ### Usage
-``
+```go
 package main
 
 import (
@@ -23,7 +24,7 @@ func main() {
 
 	fmt.Println("This text is normal again, MustParseln puts a reset at the end of the line.")
 }
-``
+```
 
 ### xterm color codes
 ![ansi sgr color codes](https://raw.github.com/foize/go.sgr/master/xterm_color_chart.png)
