@@ -50,5 +50,11 @@ func main() {
 	// fmt.Printf(sgr.MustCombine(sgr.Overlined, "%s "), "Overlined")
 	// fmt.Printf(sgr.MustCombine(sgr.OverlinedOff, "%s "), "OverlinedOff")
 
-	sgr.Parse("[red] blabla [[ escaped? [bla-fd] ]] escaped?")
+	str, err := sgr.Parse("[fgRed] blabla [[ escaped? [fg-12] ]] escaped?")
+	if err != nil {
+		fmt.Printf("Error on parsing: %s\n", err)
+		return
+	}
+
+	fmt.Printf("Parsed string: %s\n", str)
 }
