@@ -18,7 +18,7 @@ import (
 )
 
 func main() {
-	exampleString := sgr.MustParseln("This is an example: [fgRed bold] important text [reset] normal text again.")
+	exampleString := sgr.MustParseln("This is an example: [fg-red bold] important text [reset] normal text again.")
 	fmt.Print(exampleString)
 
 	secretNumberFormat := sgr.MustParseln("The secret number is [bg-17 blink]%d")

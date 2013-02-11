@@ -110,9 +110,9 @@ func parse(reset bool, newline bool, format string) (string, error) {
 			// Options
 			case "reset":
 				sb.appendSgr(Reset)
-			case "resetForegroundColor":
+			case "fg-reset":
 				sb.appendSgr(ResetForegroundColor)
-			case "resetBackgroundColor":
+			case "bg-reset":
 				sb.appendSgr(ResetBackgroundColor)
 			case "bold":
 				sb.appendSgr(Bold)
@@ -142,43 +142,43 @@ func parse(reset bool, newline bool, format string) (string, error) {
 				sb.appendSgr(OverlinedOff)
 
 			// Foreground Colors
-			case "fgBlack":
+			case "fg-black":
 				sb.appendSgr(FgBlack)
-			case "fgRed":
+			case "fg-red":
 				sb.appendSgr(FgRed)
-			case "fgGreen":
+			case "fg-green":
 				sb.appendSgr(FgGreen)
-			case "fgYellow":
+			case "fg-yellow":
 				sb.appendSgr(FgYellow)
-			case "fgBlue":
+			case "fg-blue":
 				sb.appendSgr(FgBlue)
-			case "fgMagenta":
+			case "fg-magenta":
 				sb.appendSgr(FgMagenta)
-			case "fgCyan":
+			case "fg-cyan":
 				sb.appendSgr(FgCyan)
-			case "fgGrey":
+			case "fg-grey":
 				sb.appendSgr(FgGrey)
-			case "fgWhite":
+			case "fg-white":
 				sb.appendSgr(FgWhite)
 
 			// Background Colors
-			case "bgBlack":
+			case "bg-black":
 				sb.appendSgr(BgBlack)
-			case "bgRed":
+			case "bg-red":
 				sb.appendSgr(BgRed)
-			case "bgGreen":
+			case "bg-green":
 				sb.appendSgr(BgGreen)
-			case "bgYellow":
+			case "bg-yellow":
 				sb.appendSgr(BgYellow)
-			case "bgBlue":
+			case "bg-blue":
 				sb.appendSgr(BgBlue)
-			case "bgMagenta":
+			case "bg-magenta":
 				sb.appendSgr(BgMagenta)
-			case "bgCyan":
+			case "bg-cyan":
 				sb.appendSgr(BgCyan)
-			case "bgGrey":
+			case "bg-grey":
 				sb.appendSgr(BgGrey)
-			case "bgWhite":
+			case "bg-white":
 				sb.appendSgr(BgWhite)
 
 			// Not Found
