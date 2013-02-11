@@ -83,7 +83,6 @@ func parse(reset bool, newline bool, format string) (string, error) {
 
 		// found a block
 		block := format[idxStart+1 : idxEnd]
-		fmt.Println("block: ", block)
 		fields := strings.Fields(block)
 		for _, field := range fields {
 			isFgColor := strings.HasPrefix(field, "fg-")
