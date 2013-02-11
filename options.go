@@ -4,7 +4,7 @@ import (
 	"strconv"
 )
 
-// Simple code like reset and bold
+// Defines a sgr option. Implements the `Sgr` interface.
 type sgrOption uint8
 
 func (s sgrOption) code() uint8 {

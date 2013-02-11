@@ -1,7 +1,6 @@
 package sgr
 
 import (
-	"bytes"
 	"fmt"
 )
 
@@ -51,5 +50,5 @@ func combine(reset bool, parts ...interface{}) (string, error) {
 	}
 
 	// All done, return resulting string
-	return sb.String(), nil
+	return sb.string(), nil
 }

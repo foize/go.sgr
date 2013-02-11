@@ -1,4 +1,4 @@
-package main
+package sgr
 
 import (
 	"bytes"
@@ -15,16 +15,16 @@ func (sb *sgrBuilder) append(part interface{}) error {
 	// Just a simple piece of string to add to the result
 	str, strOk := part.(string)
 	if strOk {
-		b.WriteString(str)
+		sb.buf.WriteString(str)
 		return nil
 	}
 
 	// Add a SGR definition
 	sgr, sgrOk := part.(Sgr)
 	if sgrOk {
-		b.Write(CSI)
-		b.Write(sgr.sequence())
-		b.WriteByte(SgrEnd)
+		sb.buf.Write(CSI)
+		sb.buf.Write(sgr.sequence())
+		sb.buf.WriteByte(SgrEnd)
 		return nil
 	}
 
