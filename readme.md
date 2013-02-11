@@ -28,7 +28,7 @@ func main() {
 }
 ```
 
-### Go documentation
+### Godoc
 For more information visit [godoc.org/github.com/foize/go.sgr](http://godoc.org/github.com/foize/go.sgr)
 
 ### xterm color codes
