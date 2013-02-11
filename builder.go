@@ -3,7 +3,6 @@ package sgr
 import (
 	"bytes"
 	"errors"
-	"fmt"
 )
 
 var errorInvalidPiece = errors.New("Invalid part. Expecting type `string` or `sgr.Sgr`.")
@@ -32,7 +31,6 @@ func (sb *sgrBuilder) append(part interface{}) error {
 }
 
 func (sb *sgrBuilder) appendString(str string) {
-	fmt.Println("'" + str + "'")
 	sb.buf.WriteString(str)
 }
 
