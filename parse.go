@@ -64,7 +64,7 @@ func parse(reset bool, newline bool, format string) (string, error) {
 
 		// Test for escaped square bracket
 		if format[idxStart+1] == '[' {
-			sb.appendString(format[pos : idxStart+2])
+			sb.appendString(format[pos : idxStart+1])
 			pos = idxStart + 2
 			continue
 		}
