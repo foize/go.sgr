@@ -7,6 +7,8 @@ Please use go-get to install this package.
 `go get github.com/foize/go.sgr`
 
 ### Usage
+Typical usage is to use Parseln() or MustParseln(), and use the resulting string in succeeding `fmt` or `log` calls.
+
 ```go
 package main
 
@@ -26,6 +28,7 @@ func main() {
 }
 ```
 
+### Go documentation
 For more information visit [godoc.org/github.com/foize/go.sgr](http://godoc.org/github.com/foize/go.sgr)
 
 ### xterm color codes
