@@ -26,5 +26,7 @@ func main() {
 }
 ```
 
+For more information visit [godoc.org/github.com/foize/go.sgr](http://godoc.org/github.com/foize/go.sgr)
+
 ### xterm color codes
 ![ansi sgr color codes](https://raw.github.com/foize/go.sgr/master/xterm_color_chart.png)
