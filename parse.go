@@ -188,6 +188,7 @@ func parse(reset bool, newline bool, format string) (string, error) {
 				}
 			}
 
+			continue
 		invalidBlockCode:
 			return "", fmt.Errorf("Invalid block code '%s' in block at position %d.", field, idxStart)
 
