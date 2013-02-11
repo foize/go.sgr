@@ -77,7 +77,7 @@ func parse(reset bool, newline bool, format string) (string, error) {
 		// Find square bracket end
 		relBlockClose := strings.IndexRune(format[idxStart:], ']')
 		if relBlockClose == -1 {
-			return "", fmt.Errorf("Opened square bracket never closed at pos %d.", idxStart)
+			return "", fmt.Errorf("Opened square bracket never closed at pos %d. If you want a literal bracket escape it: [[", idxStart)
 		}
 		idxEnd = idxStart + relBlockClose
 

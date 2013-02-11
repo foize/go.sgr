@@ -28,6 +28,13 @@ func main() {
 }
 ```
 
+### Escaping
+If you want to use a square bracket you should escape it like this:
+
+`sgr.MustParseln("foo [[ bar")`
+
+This will print give you "foo [ bar".
+
 ### Godoc
 For more information visit [godoc.org/github.com/foize/go.sgr](http://godoc.org/github.com/foize/go.sgr)
 
