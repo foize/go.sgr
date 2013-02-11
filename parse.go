@@ -85,26 +85,6 @@ func parse(reset bool, newline bool, format string) (string, error) {
 		block := format[idxStart+1 : idxEnd]
 		fields := strings.Fields(block)
 		for _, field := range fields {
-			isFgColor := strings.HasPrefix(field, "fg-")
-			isBgColor := strings.HasPrefix(field, "bg-")
-			if isFgColor || isBgColor {
-				// Get the color number from the fg- or bg- code
-				clr, err := strconv.Atoi(field[3:])
-				if err != nil {
-					return "", fmt.Errorf("Invalid block code '%s' in block at position %d.", field, idxStart)
-				}
-				if clr < 0 || clr > 255 {
-					return "", fmt.Errorf("Invalid color number %d. Expecting 0-255.", clr)
-				}
-
-				// Add actual fg or bg color to sgrBuilder
-				if isFgColor {
-					sb.appendSgr(FgColor(clr))
-				} else {
-					sb.appendSgr(BgColor(clr))
-				}
-				continue // next field
-			}
 
 			switch field {
 			// Options
@@ -183,8 +163,34 @@ func parse(reset bool, newline bool, format string) (string, error) {
 
 			// Not Found
 			default:
-				return "", fmt.Errorf("Invalid block code '%s' in block at position %d.", field, idxStart)
+				isFgColor := strings.HasPrefix(field, "fg-")
+				isBgColor := strings.HasPrefix(field, "bg-")
+				if isFgColor || isBgColor {
+					// Get the color number from the fg- or bg- code
+					clr, err := strconv.Atoi(field[3:])
+					if err != nil {
+						goto invalidBlockCode
+					}
+					if clr < 0 || clr > 255 {
+						return "", fmt.Errorf("Invalid color code %s. Expecting 0-255 or a defined color.", field[3:])
+					}
+
+					// Add actual fg or bg color to sgrBuilder
+					if isFgColor {
+						sb.appendSgr(FgColor(clr))
+					} else {
+						sb.appendSgr(BgColor(clr))
+					}
+					continue // next field
+				} else {
+					// not valid
+					goto invalidBlockCode
+				}
 			}
+
+		invalidBlockCode:
+			return "", fmt.Errorf("Invalid block code '%s' in block at position %d.", field, idxStart)
+
 		}
 
 		// Change starting position for next iteration.
