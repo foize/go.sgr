@@ -6,15 +6,43 @@ import (
 	"strings"
 )
 
+func MustParse(format string) string {
+	str, err := parse(true, false, format)
+	if err != nil {
+		panic(err)
+	}
+	return str
+}
+
+func MustParseln(format string) string {
+	str, err := parse(true, true, format)
+	if err != nil {
+		panic(err)
+	}
+	return str
+}
+
+func MustParseWithoutReset(format string) string {
+	str, err := parse(false, false, format)
+	if err != nil {
+		panic(err)
+	}
+	return str
+}
+
 func Parse(format string) (string, error) {
-	return parse(true, format)
+	return parse(true, false, format)
+}
+
+func Parseln(format string) (string, error) {
+	return parse(true, true, format)
 }
 
 func ParseWithoutReset(format string) (string, error) {
-	return parse(false, format)
+	return parse(false, false, format)
 }
 
-func parse(reset bool, format string) (string, error) {
+func parse(reset bool, newline bool, format string) (string, error) {
 	// Builder used to build the colored string.
 	sb := new(sgrBuilder)
 
@@ -166,6 +194,10 @@ func parse(reset bool, format string) (string, error) {
 
 	if reset {
 		sb.appendSgr(Reset)
+	}
+
+	if newline {
+		sb.appendString("\n")
 	}
 
 	return sb.string(), nil
