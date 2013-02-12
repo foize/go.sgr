@@ -4,6 +4,15 @@ import (
 	"fmt"
 )
 
+var combineDeprecatedSent = false
+
+func combineDeprecated() {
+	if !combineDeprecatedSent {
+		combineDeprecatedSent = true
+		fmt.Println("The Combine() methods in go.sgr are subject to change. Please don't rely on these methods for production invironments. Follow github.com/foize/go.sgr to stay updated.")
+	}
+}
+
 // Same as Combine, but panics instead of returning an error.
 func MustCombine(parts ...interface{}) string {
 	str, err := combine(true, parts...)
@@ -32,6 +41,7 @@ func CombineWithoutReset(parts ...interface{}) (string, error) {
 }
 
 func combine(reset bool, parts ...interface{}) (string, error) {
+	combineDeprecated()
 	// Builder used to build the colored string.
 	sb := new(sgrBuilder)
 
