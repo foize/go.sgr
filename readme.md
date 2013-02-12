@@ -1,5 +1,5 @@
 ## SGR (Select Graphic Rendition) for Go
-The package go.sgr provides methods to do text-coloring in an ANSI-escape-sequence compatible terminal. It also provides several other options such as bold, underline, negative and blink.
+The package `sgr` provides methods to use colors and text-decoration in ANSI-escape-sequence compatible terminals. It has support for 256-colors and makes available text-decorations such as bold, underline, negative and blink.
 
 ### Installation
 Please use go-get to install this package.
@@ -34,6 +34,9 @@ If you want to use a square bracket you should escape it like this:
 `sgr.MustParseln("foo [[ bar")`
 
 This will print give you `"foo [ bar"`.
+
+### TODO
+The Combine methods (not described in this readme) are subject to change. Internals might change. Features like the stdlib log package (date time) might be added in a subpackage.
 
 ### Godoc
 For more information visit [godoc.org/github.com/foize/go.sgr](http://godoc.org/github.com/foize/go.sgr)
