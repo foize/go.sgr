@@ -169,7 +169,7 @@ func parse(reset bool, newline bool, format string) (string, error) {
 					// Get the color number from the fg- or bg- code
 					clr, err := strconv.Atoi(field[3:])
 					if err != nil {
-						goto invalidBlockCode
+						goto invalidCode
 					}
 					if clr < 0 || clr > 255 {
 						return "", fmt.Errorf("Invalid color code %s. Expecting 0-255 or a defined color.", field[3:])
@@ -184,13 +184,13 @@ func parse(reset bool, newline bool, format string) (string, error) {
 					continue // next field
 				} else {
 					// not valid
-					goto invalidBlockCode
+					goto invalidCode
 				}
 			}
 
 			continue
-		invalidBlockCode:
-			return "", fmt.Errorf("Invalid block code '%s' in block at position %d.", field, idxStart)
+		invalidCode:
+			return "", fmt.Errorf("Invalid code '%s' in block at position %d.", field, idxStart)
 
 		}
 
