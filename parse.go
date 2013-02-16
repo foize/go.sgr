@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+
 var blockCodes = make(map[string]string)
 
 func init() {
@@ -150,9 +151,9 @@ func parse(reset bool, newline bool, format string) (string, error) {
 
 				// Add color sequence to the buffer
 				if isFgColor {
-					buf.WriteString(SgrStart + FgColorStart + field[3:] + SgrEnd)
+					buf.WriteString(sgrStart + fgColorStart + field[3:] + sgrEnd)
 				} else {
-					buf.WriteString(SgrStart + BgColorStart + field[3:] + SgrEnd)
+					buf.WriteString(sgrStart + bgColorStart + field[3:] + sgrEnd)
 				}
 				continue // next field
 			}

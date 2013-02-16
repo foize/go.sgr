@@ -5,10 +5,10 @@ import (
 )
 
 const (
-	SgrStart     = "\x1b["
-	FgColorStart = "38;05;"
-	BgColorStart = "48;05;"
-	SgrEnd       = "m"
+	sgrStart     = "\x1b["
+	fgColorStart = "38;05;"
+	bgColorStart = "48;05;"
+	sgrEnd       = "m"
 )
 
 // Color strings
@@ -35,11 +35,11 @@ const (
 )
 
 func FgColor(num uint8) string {
-	return SgrStart + FgColorStart + strconv.Itoa(int(num)) + SgrEnd
+	return sgrStart + fgColorStart + strconv.Itoa(int(num)) + sgrEnd
 }
 
 func BgColor(num uint8) string {
-	return SgrStart + BgColorStart + strconv.Itoa(int(num)) + SgrEnd
+	return sgrStart + bgColorStart + strconv.Itoa(int(num)) + sgrEnd
 }
 
 // Option strings
