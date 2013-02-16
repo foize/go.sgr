@@ -33,7 +33,7 @@ If you want to use an opening square bracket you should escape it like this:
 
 `sgr.MustParseln("foo [[ bar")`
 
-This will print give you `"foo [ bar"`.
+This will print `"foo [ bar"`.
 
 ### TODO
 Features like the stdlib log package (date time) might be added in a subpackage.
