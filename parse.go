@@ -1,10 +1,55 @@
 package sgr
 
 import (
+	"bytes"
 	"fmt"
 	"strconv"
 	"strings"
 )
+
+var blockCodes = make(map[string]string)
+
+func init() {
+	// Options
+	blockCodes["reset"] = Reset
+	blockCodes["fg-reset"] = ResetForegroundColor
+	blockCodes["bg-reset"] = ResetBackgroundColor
+	blockCodes["bold"] = Bold
+	blockCodes["boldOff"] = BoldOff
+	blockCodes["underline"] = Underline
+	blockCodes["underlineOff"] = UnderlineOff
+	blockCodes["blink"] = Blink
+	blockCodes["blinkOff"] = BlinkOff
+	blockCodes["imageNegative"] = ImageNegative
+	blockCodes["imagePositive"] = ImagePositive
+	blockCodes["framed"] = Framed
+	blockCodes["encircled"] = Encircled
+	blockCodes["framedEncircledOff"] = FramedEncircledOff
+	blockCodes["overlined"] = Overlined
+	blockCodes["overlinedOff"] = OverlinedOff
+
+	// Foreground Colors
+	blockCodes["fg-black"] = FgBlack
+	blockCodes["fg-red"] = FgRed
+	blockCodes["fg-green"] = FgGreen
+	blockCodes["fg-yellow"] = FgYellow
+	blockCodes["fg-blue"] = FgBlue
+	blockCodes["fg-magenta"] = FgMagenta
+	blockCodes["fg-cyan"] = FgCyan
+	blockCodes["fg-grey"] = FgGrey
+	blockCodes["fg-white"] = FgWhite
+
+	// Background Colors
+	blockCodes["bg-black"] = BgBlack
+	blockCodes["bg-red"] = BgRed
+	blockCodes["bg-green"] = BgGreen
+	blockCodes["bg-yellow"] = BgYellow
+	blockCodes["bg-blue"] = BgBlue
+	blockCodes["bg-magenta"] = BgMagenta
+	blockCodes["bg-cyan"] = BgCyan
+	blockCodes["bg-grey"] = BgGrey
+	blockCodes["bg-white"] = BgWhite
+}
 
 func MustParse(format string) string {
 	str, err := parse(true, false, format)
@@ -44,7 +89,7 @@ func ParseWithoutReset(format string) (string, error) {
 
 func parse(reset bool, newline bool, format string) (string, error) {
 	// Builder used to build the colored string.
-	sb := new(sgrBuilder)
+	buf := new(bytes.Buffer)
 
 	// position in the parsing process
 	pos := 0
@@ -57,21 +102,21 @@ func parse(reset bool, newline bool, format string) (string, error) {
 		// Find next square bracket, break loop when none was found.
 		relBlockOpen := strings.IndexRune(format[pos:], '[')
 		if relBlockOpen == -1 {
-			sb.appendString(format[pos:])
+			buf.WriteString(format[pos:])
 			break
 		}
 		idxStart = pos + relBlockOpen
 
 		// Test for escaped square bracket
 		if format[idxStart+1] == '[' {
-			sb.appendString(format[pos : idxStart+1])
+			buf.WriteString(format[pos : idxStart+1])
 			pos = idxStart + 2
 			continue
 		}
 
 		// Add skipped string (if any)
 		if idxStart > pos { //idxStart > pos+1 ???
-			sb.appendString(format[pos:idxStart])
+			buf.WriteString(format[pos:idxStart])
 		}
 
 		// Find square bracket end
@@ -86,112 +131,34 @@ func parse(reset bool, newline bool, format string) (string, error) {
 		fields := strings.Fields(block)
 		for _, field := range fields {
 
-			switch field {
-			// Options
-			case "reset":
-				sb.appendSgr(Reset)
-			case "fg-reset":
-				sb.appendSgr(ResetForegroundColor)
-			case "bg-reset":
-				sb.appendSgr(ResetBackgroundColor)
-			case "bold":
-				sb.appendSgr(Bold)
-			case "boldOff":
-				sb.appendSgr(BoldOff)
-			case "underline":
-				sb.appendSgr(Underline)
-			case "underlineOff":
-				sb.appendSgr(UnderlineOff)
-			case "blink":
-				sb.appendSgr(Blink)
-			case "blinkOff":
-				sb.appendSgr(BlinkOff)
-			case "imageNegative":
-				sb.appendSgr(ImageNegative)
-			case "imagePositive":
-				sb.appendSgr(ImagePositive)
-			case "framed":
-				sb.appendSgr(Framed)
-			case "encircled":
-				sb.appendSgr(Encircled)
-			case "framedEncircledOff":
-				sb.appendSgr(FramedEncircledOff)
-			case "overlined":
-				sb.appendSgr(Overlined)
-			case "overlinedOff":
-				sb.appendSgr(OverlinedOff)
-
-			// Foreground Colors
-			case "fg-black":
-				sb.appendSgr(FgBlack)
-			case "fg-red":
-				sb.appendSgr(FgRed)
-			case "fg-green":
-				sb.appendSgr(FgGreen)
-			case "fg-yellow":
-				sb.appendSgr(FgYellow)
-			case "fg-blue":
-				sb.appendSgr(FgBlue)
-			case "fg-magenta":
-				sb.appendSgr(FgMagenta)
-			case "fg-cyan":
-				sb.appendSgr(FgCyan)
-			case "fg-grey":
-				sb.appendSgr(FgGrey)
-			case "fg-white":
-				sb.appendSgr(FgWhite)
-
-			// Background Colors
-			case "bg-black":
-				sb.appendSgr(BgBlack)
-			case "bg-red":
-				sb.appendSgr(BgRed)
-			case "bg-green":
-				sb.appendSgr(BgGreen)
-			case "bg-yellow":
-				sb.appendSgr(BgYellow)
-			case "bg-blue":
-				sb.appendSgr(BgBlue)
-			case "bg-magenta":
-				sb.appendSgr(BgMagenta)
-			case "bg-cyan":
-				sb.appendSgr(BgCyan)
-			case "bg-grey":
-				sb.appendSgr(BgGrey)
-			case "bg-white":
-				sb.appendSgr(BgWhite)
-
-			// Not Found
-			default:
-				isFgColor := strings.HasPrefix(field, "fg-")
-				isBgColor := strings.HasPrefix(field, "bg-")
-				if isFgColor || isBgColor {
-					// Get the color number from the fg- or bg- code
-					clr, err := strconv.Atoi(field[3:])
-					if err != nil {
-						goto invalidCode
-					}
-					if clr < 0 || clr > 255 {
-						return "", fmt.Errorf("Invalid color code %s. Expecting 0-255 or a defined color.", field[3:])
-					}
-
-					// Add actual fg or bg color to sgrBuilder
-					if isFgColor {
-						sb.appendSgr(FgColor(clr))
-					} else {
-						sb.appendSgr(BgColor(clr))
-					}
-					continue // next field
-				} else {
-					// not valid
-					goto invalidCode
-				}
+			if sgrString, blockCodeExists := blockCodes[field]; blockCodeExists {
+				buf.WriteString(sgrString)
+				continue
 			}
 
-			continue
-		invalidCode:
-			return "", fmt.Errorf("Invalid code '%s' in block at position %d.", field, idxStart)
+			isFgColor := strings.HasPrefix(field, "fg-")
+			isBgColor := strings.HasPrefix(field, "bg-")
+			if isFgColor || isBgColor {
+				// Check if given number is valid.
+				clr, err := strconv.Atoi(field[3:])
+				if err != nil {
+					return "", fmt.Errorf("Invalid code '%s' in block at position %d.", field, idxStart)
+				}
+				if clr < 0 || clr > 255 {
+					return "", fmt.Errorf("Invalid color code %s. Expecting 0-255 or a defined color.", field[3:])
+				}
 
+				// Add color sequence to the buffer
+				if isFgColor {
+					buf.WriteString(SgrStart + FgColorStart + field[3:] + SgrEnd)
+				} else {
+					buf.WriteString(SgrStart + BgColorStart + field[3:] + SgrEnd)
+				}
+				continue // next field
+			}
+
+			// Not a valid blockCode and not a fgColor or bgColor
+			return "", fmt.Errorf("Invalid code '%s' in block at position %d.", field, idxStart)
 		}
 
 		// Change starting position for next iteration.
@@ -199,12 +166,12 @@ func parse(reset bool, newline bool, format string) (string, error) {
 	}
 
 	if reset {
-		sb.appendSgr(Reset)
+		buf.WriteString(Reset)
 	}
 
 	if newline {
-		sb.appendString("\n")
+		buf.WriteString("\n")
 	}
 
-	return sb.string(), nil
+	return buf.String(), nil
 }

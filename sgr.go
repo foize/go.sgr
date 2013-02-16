@@ -1,5 +1,16 @@
 package sgr
 
+import (
+	"strconv"
+)
+
+const (
+	SgrStart     = "\x1b["
+	FgColorStart = "38;05;"
+	BgColorStart = "48;05;"
+	SgrEnd       = "m"
+)
+
 // Color strings
 const (
 	FgBlack   = "\x1b[38;05;0m"
@@ -22,6 +33,14 @@ const (
 	BgGrey    = "\x1b[48;05;7m"
 	BgWhite   = "\x1b[48;05;255m"
 )
+
+func FgColor(num uint8) string {
+	return SgrStart + FgColorStart + strconv.Itoa(int(num)) + SgrEnd
+}
+
+func BgColor(num uint8) string {
+	return SgrStart + BgColorStart + strconv.Itoa(int(num)) + SgrEnd
+}
 
 // Option strings
 const (
