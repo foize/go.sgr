@@ -29,14 +29,14 @@ func main() {
 ```
 
 ### Escaping
-If you want to use a square bracket you should escape it like this:
+If you want to use an opening square bracket you should escape it like this:
 
 `sgr.MustParseln("foo [[ bar")`
 
-This will print give you `"foo [ bar"`.
+This will print `"foo [ bar"`.
 
 ### TODO
-The Combine methods (not described in this readme) are subject to change. Internals might change. Features like the stdlib log package (date time) might be added in a subpackage.
+Features like the stdlib log package (date time) might be added in a subpackage.
 
 ### Godoc
 For more information visit [godoc.org/github.com/foize/go.sgr](http://godoc.org/github.com/foize/go.sgr)

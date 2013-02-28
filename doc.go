@@ -1,7 +1,6 @@
 /*
 Typical usage is to use Parseln() or MustParseln(), and use the resulting string in succeeding `fmt` or `log` calls.
 
-
 	package main
 
 	import (
@@ -19,5 +18,10 @@ Typical usage is to use Parseln() or MustParseln(), and use the resulting string
 		fmt.Println("This text is normal again, MustParseln puts a reset at the end of the line.")
 	}
 
+If you want to use an opening square bracket you should escape it like this:
+
+	sgr.MustParseln("foo [[ bar")
+
+This will print "foo [ bar".
 */
 package sgr
