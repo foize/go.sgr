@@ -38,6 +38,9 @@ This will print `"foo [ bar"`.
 ### TODO
 Features like the stdlib log package (date time) might be added in a subpackage.
 
+### License
+This package is licensed under a (modified BSD 3-clause license)[https://github.com/foize/go.sgr/blob/master/LICENSE].
+
 ### Godoc
 For more information visit [godoc.org/github.com/foize/go.sgr](http://godoc.org/github.com/foize/go.sgr)
 
