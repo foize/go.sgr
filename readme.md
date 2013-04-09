@@ -28,6 +28,9 @@ func main() {
 }
 ```
 
+### Examples
+For more examples, see the [example/example.go file](example/example.go). You can also run the example.
+
 ### Escaping
 If you want to use an opening square bracket you should escape it like this:
 
