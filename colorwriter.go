@@ -32,6 +32,8 @@ func NewColorWriter(w io.Writer, color string, forceNewline bool) *ColorWriter {
 
 // Write writes the bytes to underlying writer, but adds coloring
 func (cw *ColorWriter) Write(p []byte) (n int, err error) {
+	var nAdd int
+
 	// add colors
 	_, err = cw.writer.Write(cw.colorBytes)
 	if err != nil {
@@ -39,10 +41,11 @@ func (cw *ColorWriter) Write(p []byte) (n int, err error) {
 	}
 
 	// write tekst/data
-	_, err = cw.writer.Write(p[:len(p)-2])
+	nAdd, err = cw.writer.Write(p[:len(p)-1])
 	if err != nil {
 		return
 	}
+	n += nAdd
 
 	// force newline if wanted && required
 	if cw.forceNewline {
@@ -52,15 +55,17 @@ func (cw *ColorWriter) Write(p []byte) (n int, err error) {
 				return
 			}
 
-			_, err = cw.writer.Write(newlineBytes)
+			nAdd, err = cw.writer.Write(p[len(p)-1:])
 			if err != nil {
 				return
 			}
+			n += nAdd
 		} else {
-			_, err = cw.writer.Write(p[len(p)-1:])
+			nAdd, err = cw.writer.Write(p[len(p)-1:])
 			if err != nil {
 				return
 			}
+			n += nAdd
 
 			_, err = cw.writer.Write(ForcedNewline)
 			if err != nil {
@@ -78,5 +83,5 @@ func (cw *ColorWriter) Write(p []byte) (n int, err error) {
 		return
 	}
 
-	return len(p), nil
+	return
 }
