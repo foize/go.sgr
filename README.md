@@ -18,9 +18,12 @@ import (
 )
 
 func main() {
-	exampleString := sgr.MustParseln("This is an example: [fg-red bold] important text [reset] normal text again.")
-	fmt.Print(exampleString)
+	sgr.Println("This is an example: [fg-red bold] important text [reset] normal text again.")
 
+	// use sgr.Printf like you're used to with fmt
+	sgr.Printf("The secret number is [fg-17]%d\n", 42)
+
+	// or, parse once and re-use the parsed format string. Using Parseln eliminates the need for a `[reset]\n` at the end of line
 	secretNumberFormat := sgr.MustParseln("The secret number is [bg-17 blink]%d")
 	fmt.Printf(secretNumberFormat, 42)
 
