@@ -1,6 +1,7 @@
 package sgr
 
 import (
+	"fmt"
 	"io"
 )
 
@@ -40,15 +41,23 @@ func (cw *ColorWriter) Write(p []byte) (n int, err error) {
 		return
 	}
 
-	// write tekst/data
-	nAdd, err = cw.writer.Write(p[:len(p)-1])
-	if err != nil {
-		return
-	}
-	n += nAdd
-
 	// force newline if wanted && required
-	if cw.forceNewline {
+	if !cw.forceNewline {
+		// write all bytes
+		nAdd, err = cw.writer.Write(p)
+		if err != nil {
+			return
+		}
+		n += nAdd
+	} else {
+		// write tekst/data except last byte
+		nAdd, err = cw.writer.Write(p[:len(p)-1])
+		if err != nil {
+			return
+		}
+		n += nAdd
+
+		// check last byte
 		if p[len(p)-1] == '\n' {
 			_, err = cw.writer.Write(ExistingNewline)
 			if err != nil {
