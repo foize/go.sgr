@@ -1,7 +1,6 @@
 package sgr
 
 import (
-	"fmt"
 	"io"
 )
 
