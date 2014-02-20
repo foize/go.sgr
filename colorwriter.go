@@ -37,17 +37,8 @@ func (cw *ColorWriter) Write(p []byte) (n int, err error) {
 	var nExtra int
 	var nExtraAdd int
 
+	// make buffer for length of given byteslice, plus 40 for coloring, reset and newline indicators
 	buf := bytes.NewBuffer(make([]byte, 0, len(p)+40))
-	defer func() {
-		if err != nil {
-			return
-		}
-		n, err = cw.writer.Write(buf.Bytes())
-		n = n - nExtra
-		if n < 0 {
-			n = 0
-		}
-	}()
 
 	// add colors
 	nExtraAdd, err = buf.Write(cw.colorBytes)
@@ -107,5 +98,13 @@ func (cw *ColorWriter) Write(p []byte) (n int, err error) {
 	}
 	nExtra += nExtraAdd
 
-	return
+	// write buffer to actual writer
+	n, err = cw.writer.Write(buf.Bytes())
+	// fix n
+	n = n - nExtra
+	if n < 0 {
+		n = 0
+	}
+	// all done
+	return n, err
 }
