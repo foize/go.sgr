@@ -1,6 +1,7 @@
 package sgr
 
 import (
+	"bytes"
 	"io"
 )
 
@@ -32,64 +33,79 @@ func NewColorWriter(w io.Writer, color string, forceNewline bool) *ColorWriter {
 
 // Write writes the bytes to underlying writer, but adds coloring
 func (cw *ColorWriter) Write(p []byte) (n int, err error) {
-	var nAdd int
+
+	var nExtra int
+	var nExtraAdd int
+
+	buf := bytes.NewBuffer(make([]byte, 0, len(p)+40))
+	defer func() {
+		if err != nil {
+			return
+		}
+		n, err = cw.writer.Write(buf.Bytes())
+		n = n - nExtra
+		if n < 0 {
+			n = 0
+		}
+	}()
 
 	// add colors
-	_, err = cw.writer.Write(cw.colorBytes)
+	nExtraAdd, err = buf.Write(cw.colorBytes)
 	if err != nil {
 		return
 	}
+	nExtra += nExtraAdd
 
 	// force newline if wanted && required
 	if !cw.forceNewline {
 		// write all bytes
-		nAdd, err = cw.writer.Write(p)
+		_, err = buf.Write(p)
 		if err != nil {
 			return
 		}
-		n += nAdd
 	} else {
 		// write tekst/data except last byte
-		nAdd, err = cw.writer.Write(p[:len(p)-1])
+		_, err = buf.Write(p[:len(p)-1])
 		if err != nil {
 			return
 		}
-		n += nAdd
 
 		// check last byte
 		if p[len(p)-1] == '\n' {
-			_, err = cw.writer.Write(ExistingNewline)
+			nExtraAdd, err = buf.Write(ExistingNewline)
 			if err != nil {
 				return
 			}
+			nExtra += nExtraAdd
 
-			nAdd, err = cw.writer.Write(p[len(p)-1:])
+			_, err = buf.Write(p[len(p)-1:])
 			if err != nil {
 				return
 			}
-			n += nAdd
 		} else {
-			nAdd, err = cw.writer.Write(p[len(p)-1:])
-			if err != nil {
-				return
-			}
-			n += nAdd
-
-			_, err = cw.writer.Write(ForcedNewline)
+			_, err = buf.Write(p[len(p)-1:])
 			if err != nil {
 				return
 			}
 
-			_, err = cw.writer.Write(newlineBytes)
+			nExtraAdd, err = buf.Write(ForcedNewline)
 			if err != nil {
 				return
 			}
+			nExtra += nExtraAdd
+
+			nExtraAdd, err = buf.Write(newlineBytes)
+			if err != nil {
+				return
+			}
+			nExtra += nExtraAdd
 		}
 	}
-	_, err = cw.writer.Write(resetBytes)
+	nExtraAdd, err = buf.Write(resetBytes)
 	if err != nil {
 		return
 	}
+	nExtra += nExtraAdd
 
 	return
 }
